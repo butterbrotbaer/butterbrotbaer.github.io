@@ -1,0 +1,4 @@
+# ALL FILENAMES LISTED IN THIS FILE ARE NOT TRACKED BY GIT.
+
+# Do not track macOS' Desktop Services Stores.
+.DS_Store
