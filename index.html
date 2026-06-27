@@ -45,6 +45,11 @@
         .nounderline a {
             text-decoration: none;
         }
+        .storybox {
+            background-color: #3bbb33;
+            padding: 2em 2em;
+            text-align: center;
+        }
     </style>
     <body>
         <div class="navbar">
@@ -160,6 +165,60 @@
                 In der Taverne:
                 <a href="https://legenden-von-andor.de/forum/viewtopic.php?f=11&t=10516">viewtopic.php?f=11&t=10516</a>.
             </p>
+
+            <div class="storybox">
+                <button onclick='prev_line()'><<<</button>
+                <button onclick='rand_line()'>Neu</button>
+                <button onclick='next_line()'>>>></button>
+
+                <p id='storybox-text'>
+                    Klickt auf <button onclick='rand_line()'>Neu</button> und ich erzähle euch von einer zufälligen Szene aus einer zufälligen Fan-Geschichte in dieser Sammlung (Spoiler-Gefahr, ~14+).
+                </p>
+            </div>
+
+            <script>
+                var index=0;
+                let lines = [];
+                fetch('Das Erbe des Wunderkindes PLAIN.txt')
+                    .then(response => response.text())
+                    .then(text => {
+                        lines = text.split(/\r?\n/).filter(item => item !== '');
+                    });
+            </script>
+
+            <script>
+                function rand_line(){
+                    if (lines.length===0) {
+                        document.getElementById('storybox-text').innerHTML = 'Gebt mir noch ein paar Sekunden, ich muss mir erst eine Geschichte ausdenken...'
+                        return;
+                    }
+                    index = Math.floor(Math.random()*lines.length);
+                    document.getElementById('storybox-text').innerHTML = lines[index];
+                }
+            </script>
+
+            <script>
+                function next_line(){
+                    if (lines.length===0) {
+                        document.getElementById('storybox-text').innerHTML = 'Gebt mir noch ein paar Sekunden, ich muss mir erst eine Geschichte ausdenken...'
+                        return;
+                    }
+                    index = (index+1)%lines.length;
+                    document.getElementById('storybox-text').innerHTML = lines[index];
+                }
+            </script>
+
+            <script>
+                function prev_line(){
+                    if (lines.length===0) {
+                        document.getElementById('storybox-text').innerHTML = 'Gebt mir noch ein paar Sekunden, ich muss mir erst eine Geschichte ausdenken...'
+                        return;
+                    }
+                    index = (index-1)%lines.length;
+                    if (index<0){ index += lines.length; }
+                    document.getElementById('storybox-text').innerHTML = lines[index];
+                }
+            </script>
 
             <iframe
                 src="/pdfjs-legacy/web/viewer.html?file=/Das_Erbe_des_Wunderkindes_v25.2.pdf"
